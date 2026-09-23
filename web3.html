@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>백화점 8F/9F 패밀리 & 라이프스타일 설문조사 포털</title>
+    
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -75,7 +76,12 @@
                 </div>
             </div>
             
-            <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <!-- 기획서 페이지로 돌아가는 홈 버튼 -->
+                <a href="department_store_space_pr_strategy_webpage.html" class="inline-flex items-center px-3 py-2 sm:px-4 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium text-sm transition-all border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <i class="fa-solid fa-house sm:mr-2"></i> <span class="hidden sm:inline">기획서 홈</span>
+                </a>
+                
                 <button id="themeToggleBtn" onclick="toggleTheme()" class="p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors" title="다크/라이트 모드 전환">
                     <i id="themeIcon" class="fa-solid fa-moon"></i>
                 </button>
