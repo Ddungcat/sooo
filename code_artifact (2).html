@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>백화점 8F/9F 리뉴얼 기획 & 설문조사 통합 포털</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Icons (FontAwesome & Lucide) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        // PR 페이지 테마 컬러
+                        brand: { 50: '#f0f7ff', 100: '#e0effe', 500: '#2563eb', 600: '#1d4ed8', 700: '#1e40af', 900: '#1e3a8a' },
+                        amber: { 50: '#fffbf0', 100: '#fef3c7', 500: '#f59e0b', 600: '#d97706', 700: '#b45309', 800: '#92400e', 900: '#78350f' },
+                        space8f: { light: '#f0fdf4', DEFAULT: '#16a34a', dark: '#15803d' },
+                        space9f: { light: '#eff6ff', DEFAULT: '#2563eb', dark: '#1d4ed8' }
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans KR', 'Inter', 'sans-serif'],
+                        montserrat: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; }
+        /* 공통 스크롤바 & 테마 */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        
+        /* PR 기획서 전용 스타일 */
+        .active-tab { border-bottom: 3px solid #d97706; color: #b45309; font-weight: 700; }
+        .poster-font { font-family: 'Montserrat', sans-serif; }
+        
+        /* 설문조사 전용 스타일 */
+        .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .card-hover:hover { transform: translateY(-6px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+        .glass-header { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col antialiased transition-colors duration-300">
+
+    <!-- ========================================== -->
+    <!-- PAGE 1: PR STRATEGY PAGE                   -->
+    <!-- ========================================== -->
+    <div id="page-pr" class="block w-full">
+        <!-- Top Header Navigation -->
+        <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-white font-bold text-lg shadow-md">
+                            DS
+                        </div>
+                        <div>
+                            <span class="text-xs font-semibold tracking-wider text-amber-700 uppercase">Space & PR Strategy</span>
+                            <h1 class="text-lg font-bold text-slate-900 leading-tight">백화점 공간 홍보 기획서</h1>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Tabs (Desktop) -->
+                    <nav class="hidden md:flex space-x-6 text-sm font-medium">
+                        <button onclick="switchTab('tab-summary')" id="nav-tab-summary" class="nav-btn py-5 px-1 active-tab flex items-center space-x-1.5 transition">
+                            <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+                            <span>기획 개요</span>
+                        </button>
+                        <button onclick="switchTab('tab-spatial')" id="nav-tab-spatial" class="nav-btn py-5 px-1 text-slate-500 hover:text-slate-800 flex items-center space-x-1.5 transition">
+                            <i data-lucide="map-pin" class="w-4 h-4"></i>
+                            <span>8F/9F 공간 기획</span>
+                        </button>
+                        <button onclick="switchTab('tab-campaign')" id="nav-tab-campaign" class="nav-btn py-5 px-1 text-slate-500 hover:text-slate-800 flex items-center space-x-1.5 transition">
+                            <i data-lucide="megaphone" class="w-4 h-4"></i>
+                            <span>PR 캠페인</span>
+                        </button>
+                        <button onclick="switchTab('tab-checklist')" id="nav-tab-checklist" class="nav-btn py-5 px-1 text-slate-500 hover:text-slate-800 flex items-center space-x-1.5 transition">
+                            <i data-lucide="check-square" class="w-4 h-4"></i>
+                            <span>실행 체크리스트</span>
+                        </button>
+                        <button onclick="switchTab('tab-ai-gen')" id="nav-tab-ai-gen" class="nav-btn py-5 px-1 text-slate-500 hover:text-slate-800 flex items-center space-x-1.5 transition">
+                            <i data-lucide="sparkles" class="w-4 h-4 text-amber-500"></i>
+                            <span>AI 생성기</span>
+                        </button>
+                        <!-- 수정된 사전조사 버튼: 클릭 시 page-survey로 화면 전환 -->
+                        <button onclick="switchPage('page-survey')" class="py-5 px-1 text-blue-600 font-bold hover:text-blue-800 flex items-center space-x-1.5 transition">
+                            <i data-lucide="clipboard-list" class="w-4 h-4"></i>
+                            <span>사전조사 포털</span>
+                        </button>
+                    </nav>
+
+                    <!-- Status Badge -->
+                    <div class="flex items-center space-x-2">
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                            <span class="w-2 h-2 mr-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                            결재 완료
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Nav Bar -->
+            <div class="md:hidden border-t border-slate-100 bg-slate-50 px-2 py-2 flex justify-around text-xs font-medium overflow-x-auto custom-scrollbar">
+                <button onclick="switchTab('tab-summary')" id="m-nav-tab-summary" class="m-nav-btn py-1.5 px-3 rounded-lg bg-amber-50 text-amber-700 font-bold whitespace-nowrap">개요</button>
+                <button onclick="switchTab('tab-spatial')" id="m-nav-tab-spatial" class="m-nav-btn py-1.5 px-3 rounded-lg text-slate-600 hover:bg-slate-100 whitespace-nowrap">공간기획</button>
+                <button onclick="switchTab('tab-campaign')" id="m-nav-tab-campaign" class="m-nav-btn py-1.5 px-3 rounded-lg text-slate-600 hover:bg-slate-100 whitespace-nowrap">PR 캠페인</button>
+                <button onclick="switchTab('tab-checklist')" id="m-nav-tab-checklist" class="m-nav-btn py-1.5 px-3 rounded-lg text-slate-600 hover:bg-slate-100 whitespace-nowrap">체크리스트</button>
+                <button onclick="switchPage('page-survey')" class="m-nav-btn py-1.5 px-3 rounded-lg text-blue-600 bg-blue-50 hover:bg-blue-100 whitespace-nowrap font-semibold">사전조사</button>
+            </div>
+        </header>
+
+        <!-- Document Header / Approval Line Banner -->
+        <section class="bg-slate-900 text-white py-8 px-4 sm:px-6 lg:px-8 shadow-inner">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                <div class="space-y-3 max-w-3xl">
+                    <div class="flex flex-wrap items-center gap-2 text-xs">
+                        <span class="bg-amber-500/20 text-amber-300 px-2.5 py-0.5 rounded border border-amber-500/30 font-semibold">SPACE PROMOTION PROPOSAL</span>
+                        <span class="text-slate-400">|</span>
+                        <span class="text-slate-300">8F-9F FAMILY & LIFESTYLE CULTURE ZONE</span>
+                        <span class="text-slate-400">|</span>
+                        <span class="text-emerald-400 flex items-center gap-1"><i data-lucide="shield-check" class="w-3.5 h-3.5"></i> 진위확인 완료 (이수현)</span>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+                        8F 체험형 패밀리 공간 & 9F 다이닝 · 릴렉스 리뉴얼 프로모션
+                    </h2>
+                    <div class="flex flex-wrap gap-2 text-xs">
+                        <span class="bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full">#8F_PlayPlaza</span>
+                        <span class="bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full">#4대캐릭터체험존</span>
+                        <span class="bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full">#9F_뷰카페</span>
+                        <span class="bg-amber-900/60 text-amber-200 border border-amber-700/50 px-2.5 py-1 rounded-full font-medium">#3040육아맘_맞춤공간</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- TAB 1: EXECUTIVE SUMMARY / CONCEPT -->
+            <section id="tab-summary" class="tab-content space-y-8">
+                <!-- Core Vision Banner -->
+                <div class="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 rounded-2xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
+                    <div class="relative z-10 max-w-3xl space-y-3">
+                        <span class="bg-black/20 text-white text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full inline-block">Renewed Strategic Vision</span>
+                        <h3 class="text-2xl sm:text-3xl font-extrabold leading-snug">
+                            "단순한 쇼핑몰을 넘어, 상상이 현실이 되는 체험 공간과 여유로운 휴식의 조화"
+                        </h3>
+                        <p class="text-amber-100 text-sm sm:text-base leading-relaxed">
+                            아이들에게는 캐릭터 세계를 직접 탐험하고 체험하는 꿈의 놀이터, 부모에게는 안심 케어와 함께 편안한 휴식 및 다이닝을 누릴 수 있는 패밀리 라이프스타일 랜드마크로 재탄생합니다.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Concept Graphic Display -->
+                <div class="bg-slate-900 rounded-2xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
+                    <div class="flex flex-col md:flex-row items-center gap-8">
+                        <div class="w-full md:w-1/2 space-y-4">
+                            <span class="px-3 py-1 bg-amber-500 text-slate-900 font-bold text-xs rounded-full">KEY CAMPAIGN MOTTO</span>
+                            <h4 class="text-3xl font-black poster-font tracking-tight text-amber-400">
+                                "MOM IS EXHAUSTED,<br>BUT KIDS ARE HAPPY!"
+                            </h4>
+                            <p class="text-slate-300 text-sm leading-relaxed">
+                                육아맘이라면 누구나 격하게 공감하는 "지친 엄마와 에너지가 넘치는 아이"의 현실적인 상황을 재치있게 짚어냅니다.<br>
+                                엄마의 피로를 진정한 휴식으로, 아이의 에너지를 유익한 즐거움으로 승화시킵니다.
+                            </p>
+                        </div>
+                        <div class="w-full md:w-1/2 flex justify-center">
+                            <div class="bg-gradient-to-br from-indigo-900 to-slate-800 p-6 rounded-2xl border border-slate-700 shadow-2xl max-w-sm text-center">
+                                <div class="border-2 border-dashed border-amber-400/50 p-6 rounded-xl space-y-3">
+                                    <div class="text-xs text-amber-300 font-bold tracking-widest">DIRTY MOMKEY x DEPT STORE</div>
+                                    <div class="text-2xl font-black text-white poster-font">MOM IS EXHAUSTED</div>
+                                    <div class="text-lg font-bold text-amber-400 italic poster-font">But Kids Are Happy!</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: 8F / 9F SPATIAL PROPOSAL -->
+            <section id="tab-spatial" class="tab-content hidden space-y-6">
+                <!-- Floor Navigation Selector -->
+                <div class="flex space-x-3 bg-white p-2 rounded-2xl border border-slate-200 shadow-sm max-w-md mx-auto">
+                    <button onclick="showFloor('8f')" id="btn-floor-8f" class="flex-1 py-3 px-4 rounded-xl font-bold text-sm transition flex items-center justify-center space-x-2 bg-emerald-600 text-white shadow">
+                        <i data-lucide="gamepad-2" class="w-4 h-4"></i><span>8F PLAY PLAZA</span>
+                    </button>
+                    <button onclick="showFloor('9f')" id="btn-floor-9f" class="flex-1 py-3 px-4 rounded-xl font-bold text-sm transition flex items-center justify-center space-x-2 bg-slate-100 text-slate-600">
+                        <i data-lucide="coffee" class="w-4 h-4"></i><span>9F DINING & REST</span>
+                    </button>
+                </div>
+
+                <!-- 8F CONTENT -->
+                <div id="floor-8f-content" class="space-y-6">
+                    <div class="bg-gradient-to-r from-emerald-600 to-teal-700 text-white p-6 rounded-2xl shadow-lg">
+                        <h3 class="text-2xl font-extrabold mt-1">8F 체험형 패밀리 공간 (Play Plaza & Character World)</h3>
+                        <p class="text-emerald-100 text-sm mt-1">부모의 안심 휴식 중심 360도 소파존과 아이들의 4대 캐릭터 체험 공간</p>
+                    </div>
+                </div>
+                
+                <!-- 9F CONTENT -->
+                <div id="floor-9f-content" class="space-y-6 hidden">
+                    <div class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-6 rounded-2xl shadow-lg">
+                        <h3 class="text-2xl font-extrabold mt-1">9F 다이닝 & 릴렉스 (Family Dining & Rest Area)</h3>
+                        <p class="text-blue-100 text-sm mt-1">8층 플레이존 조망 통유리 뷰카페 및 미식·유아 편의 전용 공간</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: PR CAMPAIGN PLAN -->
+            <section id="tab-campaign" class="tab-content hidden space-y-8">
+                <div class="bg-slate-900 text-white rounded-2xl p-6 shadow-lg">
+                    <h3 class="text-2xl font-extrabold">단계별 PR 마케팅 캠페인 실행안</h3>
+                    <p class="text-slate-300 text-sm">티저 포스터, 숏폼 영상, 카드뉴스 5종의 다각적 바이럴 전략</p>
+                </div>
+            </section>
+
+            <!-- TAB 4: CHECKLIST TRACKER -->
+            <section id="tab-checklist" class="tab-content hidden space-y-6">
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                    <h3 class="text-xl font-bold text-slate-900">PR 캠페인 실행 체크리스트</h3>
+                    <p class="text-xs text-slate-500">오픈 전, 오픈 당일, 오픈 후 항목 관리</p>
+                </div>
+            </section>
+
+            <!-- TAB 5: AI PR COPYWRITER GENERATOR -->
+            <section id="tab-ai-gen" class="tab-content hidden space-y-6">
+                <div class="bg-gradient-to-r from-amber-500 to-orange-600 rounded-2xl p-6 text-white shadow-lg space-y-2">
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="sparkles" class="w-6 h-6 text-amber-200"></i>
+                        <h3 class="text-xl font-extrabold">AI 홍보 마케팅 문구 카피라이터</h3>
+                    </div>
+                    <p class="text-amber-100 text-sm">Gemini AI 엔진을 활용하여 홍보 문구를 즉시 생성해보세요!</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- PAGE 2: SURVEY PORTAL PAGE                 -->
+    <!-- ========================================== -->
+    <div id="page-survey" class="hidden w-full">
+        <!-- Header Navbar -->
+        <header class="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800 glass-header transition-colors">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-600 flex items-center justify-center text-white shadow-md font-bold text-lg">
+                        8·9
+                    </div>
+                    <div>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-brand-600 dark:text-brand-400 block">Department Store Survey</span>
+                        <h1 class="text-base font-bold text-slate-900 dark:text-white leading-none">패밀리 & 라이프스타일 설문 포털</h1>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-2 sm:space-x-3">
+                    <!-- 수정된 기획서 홈 버튼: 클릭 시 page-pr로 화면 전환 -->
+                    <button onclick="switchPage('page-pr')" class="inline-flex items-center px-3 py-2 sm:px-4 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium text-sm transition-all border border-slate-200 dark:border-slate-700 shadow-sm">
+                        <i class="fa-solid fa-house sm:mr-2"></i> <span class="hidden sm:inline">기획서 홈</span>
+                    </button>
+                    
+                    <button id="themeToggleBtn" onclick="toggleTheme()" class="p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors" title="다크/라이트 모드 전환">
+                        <i id="themeIcon" class="fa-solid fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="relative overflow-hidden bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white py-16 sm:py-20 px-4">
+            <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px]"></div>
+            <div class="max-w-4xl mx-auto text-center relative z-10">
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-500/20 text-brand-300 border border-brand-500/30 mb-4">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    고객 의견 수렴 및 공간 리뉴얼
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-4">
+                    백화점 8F / 9F 공간 리뉴얼<br class="hidden sm:inline"/> 고객 설문조사
+                </h2>
+                <p class="text-slate-300 text-sm sm:text-base md:text-lg max-w-2xl mx-auto mb-8 font-light leading-relaxed">
+                    패밀리 & 라이프스타일 존의 새로운 변화를 함께 만들어갑니다.<br/>
+                    소중한 의견을 남겨주시면 더 나은 쇼핑 및 문화 공간으로 보답하겠습니다.
+                </p>
+            </div>
+        </section>
+
+        <!-- Main Content Container -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <!-- Section Filter & Search Header -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-6 border-b border-slate-200 dark:border-slate-800">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-brand-600 dark:text-brand-400"></i> 참여 가능한 설문 목록
+                    </h3>
+                </div>
+                <div class="relative w-full sm:w-64">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                    <input type="text" id="searchInput" onkeyup="filterSurveys()" placeholder="설문 제목 검색..." class="w-full pl-9 pr-3 py-2 text-sm bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500">
+                </div>
+            </div>
+
+            <!-- Cards Grid Container -->
+            <div id="surveyGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="survey-card bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 p-6 flex flex-col justify-between card-hover relative shadow-sm">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-indigo-500"></div>
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-3">
+                            <span class="px-2.5 py-0.5 rounded-md text-xs font-semibold bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300">만족도 조사</span>
+                        </div>
+                        <h4 class="card-title text-base font-bold text-slate-900 dark:text-white mb-3">백화점 8F/9F 컬처존 만족도 조사</h4>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mb-6">현재 8F/9F 컬처존 이용 경험 및 서비스 만족 요소 의견 수렴.</p>
+                    </div>
+                    <a href="https://forms.gle/dfrE2nHRrjLHnG4w6" target="_blank" class="inline-flex items-center justify-center w-full px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-medium text-xs shadow-sm">
+                        설문 작성하기 <i class="fa-solid fa-arrow-up-right-from-square ml-1.5"></i>
+                    </a>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="survey-card bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 p-6 flex flex-col justify-between card-hover relative shadow-sm">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-3">
+                            <span class="px-2.5 py-0.5 rounded-md text-xs font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">공간 리뉴얼</span>
+                        </div>
+                        <h4 class="card-title text-base font-bold text-slate-900 dark:text-white mb-3">[사전 수요조사] 공간 리뉴얼 고객 조사</h4>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mb-6">새롭게 단장될 공간의 전체적인 디자인 컨셉 선호 조사.</p>
+                    </div>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdehs0Xii5rgyIoRenn43edNm1_HJk1fPFWPb5ykcSHWGp-dQ/viewform" target="_blank" class="inline-flex items-center justify-center w-full px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs shadow-sm">
+                        설문 작성하기 <i class="fa-solid fa-arrow-up-right-from-square ml-1.5"></i>
+                    </a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Lucide 아이콘 초기화
+        lucide.createIcons();
+
+        // 1. 페이지 전환 (SPA 라우팅) 로직
+        function switchPage(pageId) {
+            // 모든 페이지 숨김
+            document.getElementById('page-pr').classList.add('hidden');
+            document.getElementById('page-survey').classList.add('hidden');
+            
+            // 요청받은 페이지만 표시
+            document.getElementById(pageId).classList.remove('hidden');
+            
+            // 화면 상단으로 스크롤 이동
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 2. PR 기획서 - 탭 전환 로직
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(tabId).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active-tab');
+                btn.classList.add('text-slate-500');
+            });
+            const activeNav = document.getElementById('nav-' + tabId);
+            if (activeNav) {
+                activeNav.classList.add('active-tab');
+                activeNav.classList.remove('text-slate-500');
+            }
+        }
+
+        // 3. PR 기획서 - 층별 전환 로직
+        function showFloor(floor) {
+            const f8 = document.getElementById('floor-8f-content');
+            const f9 = document.getElementById('floor-9f-content');
+            const btn8 = document.getElementById('btn-floor-8f');
+            const btn9 = document.getElementById('btn-floor-9f');
+
+            if (floor === '8f') {
+                f8.classList.remove('hidden'); f9.classList.add('hidden');
+                btn8.className = "flex-1 py-3 px-4 rounded-xl font-bold text-sm transition bg-emerald-600 text-white shadow";
+                btn9.className = "flex-1 py-3 px-4 rounded-xl font-bold text-sm transition bg-slate-100 text-slate-600 hover:bg-slate-200";
+            } else {
+                f8.classList.add('hidden'); f9.classList.remove('hidden');
+                btn9.className = "flex-1 py-3 px-4 rounded-xl font-bold text-sm transition bg-blue-600 text-white shadow";
+                btn8.className = "flex-1 py-3 px-4 rounded-xl font-bold text-sm transition bg-slate-100 text-slate-600 hover:bg-slate-200";
+            }
+        }
+
+        // 4. 설문조사 - 다크 모드 토글 로직
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('themeIcon');
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                icon.className = 'fa-solid fa-moon';
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                icon.className = 'fa-solid fa-sun';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // 5. 설문조사 - 제목 검색 필터 로직
+        function filterSurveys() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const cards = document.querySelectorAll('.survey-card');
+            
+            cards.forEach(card => {
+                const title = card.querySelector('.card-title').textContent.toLowerCase();
+                if (title.includes(query)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
